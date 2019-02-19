@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="卷积," />
 
 
 
@@ -81,13 +81,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
+<meta name="keywords" content="卷积">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多种多样的卷积操作">
+<meta property="og:url" content="http://yoursite.com/2019/02/19/多种多样的卷积操作/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-19T03:01:48.620Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="多种多样的卷积操作">
+<meta name="twitter:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
 
 
 
@@ -117,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/19/多种多样的卷积操作/"/>
 
 
 
 
 
-  <title>归档 | Hexo</title>
+  <title>多种多样的卷积操作 | Hexo</title>
   
 
 
@@ -142,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <a href="https://github.com/ABadCandy"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on Github" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
@@ -282,74 +287,195 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 1 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/多种多样的卷积操作/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="A Bad Candy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lena.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/02/19/多种多样的卷积操作/" itemprop="url">
-              
-                <span itemprop="name">多种多样的卷积操作</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">多种多样的卷积操作</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-02-19T10:25:00+08:00"
-              content="2019-02-19" >
-          02-19
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-19T10:25:00+08:00">
+                2019-02-19
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/深度学习/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在<a href="https://blog.csdn.net/qq_26293147?t=1" target="_blank" rel="noopener">CSDN</a>上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之前看过的论文和资料以及最近微博上爱可可老师分享的文章<a href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Ftowardsdatascience.com%2Fa-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215" target="_blank" rel="noopener">《A Comprehensive Introduction to Different Types of Convolutions in Deep Learning》</a>,来一起感受下深度学习中“卷积”的魅力~ （注：本文主要翻译该篇文章，并加上自己的理解，同时会扩展提到其他几种不同的卷积形式）</p>
+<p>本文内容包括：</p>
+<ol>
+<li>卷积与互相关</li>
+<li>深度学习中的卷积（单通道版本，多通道版本）</li>
+<li>3D卷积</li>
+<li>1 x 1卷积</li>
+<li>卷积数学基础</li>
+<li>转置(Transposed)卷积（反卷积Deconvolution，棋盘伪影）</li>
+<li>扩张(Dilated)卷积（Atrous Convolution）</li>
+<li>可分离(Seperable)卷积（空间可分离卷积，深度分离卷积）</li>
+<li>扁平(Flatten)卷积</li>
+<li>分组(Group)卷积</li>
+<li>打乱(Shuffle)分组卷积</li>
+<li>逐点(Point-wise)分组卷积  </li>
+<li>因果(Casual)卷积  </li>
+<li>变形(Deformable)卷积</li>
+<li>分解(decomposed)转置卷积 </li>
+<li>Depth to space</li>
+<li>Bilinear additive upsampling</li>
+<li>图卷积（Graph Convolution）</li>
+<li>Spherical CNNs</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/卷积/" rel="tag"># 卷积</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
 
       
 
-    </div>
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -357,6 +483,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -377,8 +507,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -477,6 +616,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -646,6 +801,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F01%2F16%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+    <title><![CDATA[多种多样的卷积操作]]></title>
+    <url>%2F2019%2F02%2F19%2F%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之前看过的论文和资料以及最近微博上爱可可老师分享的文章《A Comprehensive Introduction to Different Types of Convolutions in Deep Learning》,来一起感受下深度学习中“卷积”的魅力~ （注：本文主要翻译该篇文章，并加上自己的理解，同时会扩展提到其他几种不同的卷积形式） 本文内容包括： 卷积与互相关 深度学习中的卷积（单通道版本，多通道版本） 3D卷积 1 x 1卷积 卷积数学基础 转置(Transposed)卷积（反卷积Deconvolution，棋盘伪影） 扩张(Dilated)卷积（Atrous Convolution） 可分离(Seperable)卷积（空间可分离卷积，深度分离卷积） 扁平(Flatten)卷积 分组(Group)卷积 打乱(Shuffle)分组卷积 逐点(Point-wise)分组卷积 因果(Casual)卷积 变形(Deformable)卷积 分解(decomposed)转置卷积 Depth to space Bilinear additive upsampling 图卷积（Graph Convolution） Spherical CNNs]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>卷积</tag>
+      </tags>
   </entry>
 </search>
