@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-02-19T12:39:18.617Z</updated>
+  <updated>2019-02-19T13:05:55.044Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>多种多样的卷积操作（下篇）</title>
+    <link href="http://yoursite.com/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%8B%E7%AF%87%EF%BC%89/"/>
+    <id>http://yoursite.com/2019/02/19/多种多样的卷积操作（下篇）/</id>
+    <published>2019-02-19T12:42:47.000Z</published>
+    <updated>2019-02-19T13:05:55.044Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;因果卷积&quot;&gt;&lt;a href=&quot;#因果卷积&quot; class=&quot;headerlink&quot; title=&quot;因果卷积&quot;&gt;&lt;/a&gt;因果卷积&lt;/h4&gt;&lt;p&gt;casual卷积最初随&lt;a href=&quot;https://arxiv.org/pdf/1609.03499.pdf&quot;
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>多种多样的卷积操作（中篇）</title>

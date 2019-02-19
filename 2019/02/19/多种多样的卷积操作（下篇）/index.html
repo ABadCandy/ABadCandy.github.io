@@ -81,17 +81,21 @@
 
 
 
-<meta name="description" content="About meICTABadCandy菜鸟进阶之旅，关注机器学习、深度学习、图像处理和时空序列分析等前沿知识。 E-mail: goodcandy10@gmail.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多种多样的卷积操作（下篇）">
+<meta property="og:url" content="http://yoursite.com/2019/02/19/多种多样的卷积操作（下篇）/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="About meICTABadCandy菜鸟进阶之旅，关注机器学习、深度学习、图像处理和时空序列分析等前沿知识。 E-mail: goodcandy10@gmail.com">
+<meta property="og:description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-19T01:33:17.986Z">
+<meta property="og:image" content="http://images/pasted-70.png/">
+<meta property="og:image" content="http://images/pasted-71.png/">
+<meta property="og:image" content="http://images/pasted-73.png/">
+<meta property="og:updated_time" content="2019-02-19T13:05:55.044Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="About meICTABadCandy菜鸟进阶之旅，关注机器学习、深度学习、图像处理和时空序列分析等前沿知识。 E-mail: goodcandy10@gmail.com">
+<meta name="twitter:title" content="多种多样的卷积操作（下篇）">
+<meta name="twitter:description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
+<meta name="twitter:image" content="http://images/pasted-70.png/">
 
 
 
@@ -121,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/19/多种多样的卷积操作（下篇）/"/>
 
 
 
 
 
-  <title>about | Hexo</title>
+  <title>多种多样的卷积操作（下篇） | Hexo</title>
   
 
 
@@ -288,35 +292,164 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/多种多样的卷积操作（下篇）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="A Bad Candy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/lena.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h2 id="About-me"><a href="#About-me" class="headerlink" title="About me"></a>About me</h2><p>ICTABadCandy菜鸟进阶之旅，关注机器学习、深度学习、图像处理和时空序列分析等前沿知识。</p>
-<p>E-mail: goodcandy10@gmail.com</p>
-
+          <h1 class="post-title" itemprop="name headline">多种多样的卷积操作（下篇）</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-19T20:42:47+08:00">
+                2019-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h4 id="因果卷积"><a href="#因果卷积" class="headerlink" title="因果卷积"></a>因果卷积</h4><p>casual卷积最初随<a href="https://arxiv.org/pdf/1609.03499.pdf" target="_blank" rel="noopener">WaveNet</a>一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLSTM的思想截然不同。</p>
+<p><img src="\\images\pasted-70.png\" alt="casual convolution"></p>
+<p>由于声音文件是时间上的一维数组，16KHz的采样率的文件，每秒钟就会有16000个元素，而上面所说的因果卷积的感受野非常小，即使堆叠很多层也只能使用到很少的数据来生成t时刻的的元素，为了扩大卷积的感受野，WaveNet采用了堆叠了（stack）多层扩张（dilated ）卷积(<a href="http://localhost:4000/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/" target="_blank" rel="noopener">中篇</a>里有提到)来增大网络的感受野，使得网络生成下一个元素的时候，能够使用更多之前的元素数值。1D扩张卷积如下图所示：</p>
+<p><img src="\\images\pasted-71.png\" alt="一维扩张卷积。在实现上，1D的dilate conv主要是通过padding来实现的。2D主要是通过mask filter map来实现的"></p>
+<p>整个生成过程的动态图如下:</p>
+<p><img src="\\images\pasted-73.png\" alt="dilated casual convolution"></p>
+<h4 id="变形卷积"><a href="#变形卷积" class="headerlink" title="变形卷积"></a>变形卷积</h4><p>deformable卷积来自<a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">论文《Deformable Convolutional Networks》</a>,是MASA 2017年的作品，其灵感来源于<a href="https://arxiv.org/abs/1506.02025" target="_blank" rel="noopener">STN（Spatial Transform Network</a>,但二者有着巨大的差别：</p>
+<h4 id="上采样"><a href="#上采样" class="headerlink" title="上采样"></a>上采样</h4><h4 id="Depth-to-space"><a href="#Depth-to-space" class="headerlink" title="Depth to space"></a>Depth to space</h4><h4 id="Bilinear-additive-upsampling"><a href="#Bilinear-additive-upsampling" class="headerlink" title="Bilinear additive upsampling"></a>Bilinear additive upsampling</h4><h4 id="Graph-Convolution"><a href="#Graph-Convolution" class="headerlink" title="Graph Convolution"></a>Graph Convolution</h4><h4 id="Spherical-CNNs"><a href="#Spherical-CNNs" class="headerlink" title="Spherical CNNs"></a>Spherical CNNs</h4>
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/19/多种多样的卷积操作（中篇）/" rel="next" title="多种多样的卷积操作（中篇）">
+                <i class="fa fa-chevron-left"></i> 多种多样的卷积操作（中篇）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -468,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#About-me"><span class="nav-number">1.</span> <span class="nav-text">About me</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#因果卷积"><span class="nav-number">1.</span> <span class="nav-text">因果卷积</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变形卷积"><span class="nav-number">2.</span> <span class="nav-text">变形卷积</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上采样"><span class="nav-number">3.</span> <span class="nav-text">上采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Depth-to-space"><span class="nav-number">4.</span> <span class="nav-text">Depth to space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bilinear-additive-upsampling"><span class="nav-number">5.</span> <span class="nav-text">Bilinear additive upsampling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Graph-Convolution"><span class="nav-number">6.</span> <span class="nav-text">Graph Convolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spherical-CNNs"><span class="nav-number">7.</span> <span class="nav-text">Spherical CNNs</span></a></li></ol></div>
             
 
           </div>
