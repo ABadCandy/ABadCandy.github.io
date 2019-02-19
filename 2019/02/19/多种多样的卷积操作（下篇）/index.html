@@ -88,14 +88,14 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://images/pasted-70.png/">
-<meta property="og:image" content="http://images/pasted-71.png/">
-<meta property="og:image" content="http://images/pasted-73.png/">
-<meta property="og:updated_time" content="2019-02-19T13:05:55.044Z">
+<meta property="og:image" content="http://yoursite.com/images/pasted-70.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-71.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-73.png">
+<meta property="og:updated_time" content="2019-02-19T14:48:23.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（下篇）">
 <meta name="twitter:description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
-<meta name="twitter:image" content="http://images/pasted-70.png/">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-70.png">
 
 
 
@@ -377,11 +377,11 @@
 
       
         <h4 id="因果卷积"><a href="#因果卷积" class="headerlink" title="因果卷积"></a>因果卷积</h4><p>casual卷积最初随<a href="https://arxiv.org/pdf/1609.03499.pdf" target="_blank" rel="noopener">WaveNet</a>一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLSTM的思想截然不同。</p>
-<p><img src="\\images\pasted-70.png\" alt="casual convolution"></p>
+<p><img src="../../../../images/pasted-70.png" alt="casual convolution"></p>
 <p>由于声音文件是时间上的一维数组，16KHz的采样率的文件，每秒钟就会有16000个元素，而上面所说的因果卷积的感受野非常小，即使堆叠很多层也只能使用到很少的数据来生成t时刻的的元素，为了扩大卷积的感受野，WaveNet采用了堆叠了（stack）多层扩张（dilated ）卷积(<a href="http://localhost:4000/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/" target="_blank" rel="noopener">中篇</a>里有提到)来增大网络的感受野，使得网络生成下一个元素的时候，能够使用更多之前的元素数值。1D扩张卷积如下图所示：</p>
-<p><img src="\\images\pasted-71.png\" alt="一维扩张卷积。在实现上，1D的dilate conv主要是通过padding来实现的。2D主要是通过mask filter map来实现的"></p>
+<p><img src="../../../../images/pasted-71.png" alt="一维扩张卷积。在实现上，1D的dilate conv主要是通过padding来实现的。2D主要是通过mask filter map来实现的"></p>
 <p>整个生成过程的动态图如下:</p>
-<p><img src="\\images\pasted-73.png\" alt="dilated casual convolution"></p>
+<p><img src="../../../../images/pasted-73.png" alt="dilated casual convolution"></p>
 <h4 id="变形卷积"><a href="#变形卷积" class="headerlink" title="变形卷积"></a>变形卷积</h4><p>deformable卷积来自<a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">论文《Deformable Convolutional Networks》</a>,是MASA 2017年的作品，其灵感来源于<a href="https://arxiv.org/abs/1506.02025" target="_blank" rel="noopener">STN（Spatial Transform Network</a>,但二者有着巨大的差别：</p>
 <h4 id="上采样"><a href="#上采样" class="headerlink" title="上采样"></a>上采样</h4><h4 id="Depth-to-space"><a href="#Depth-to-space" class="headerlink" title="Depth to space"></a>Depth to space</h4><h4 id="Bilinear-additive-upsampling"><a href="#Bilinear-additive-upsampling" class="headerlink" title="Bilinear additive upsampling"></a>Bilinear additive upsampling</h4><h4 id="Graph-Convolution"><a href="#Graph-Convolution" class="headerlink" title="Graph Convolution"></a>Graph Convolution</h4><h4 id="Spherical-CNNs"><a href="#Spherical-CNNs" class="headerlink" title="Spherical CNNs"></a>Spherical CNNs</h4>
       
