@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://images/pasted-21.png/">
 <meta property="og:image" content="http://images/pasted-34.png/">
 <meta property="og:image" content="http://images/pasted-35.png/">
-<meta property="og:updated_time" content="2019-02-19T11:15:10.388Z">
+<meta property="og:updated_time" content="2019-02-19T13:00:18.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（上篇）">
 <meta name="twitter:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
@@ -437,11 +437,12 @@
 <ol>
 <li>因果(Casual)卷积  </li>
 <li>变形(Deformable)卷积</li>
-<li>分解(decomposed)转置卷积 </li>
+<li>上采样（Unpooling, Decomposed Transposed Convolution）</li>
 <li>Depth to space</li>
 <li>Bilinear additive upsampling</li>
 <li>Graph Convolution</li>
 <li>Spherical CNNs</li>
+<li>深度学习框架中的卷积实现</li>
 </ol>
 <h4 id="卷积与互相关"><a href="#卷积与互相关" class="headerlink" title="卷积与互相关"></a>卷积与互相关</h4><p>卷积是信号处理，图像处理和其他工程/科学领域中广泛使用的技术。在深度学习中，一种模型架构，即卷积神经网络（CNN），以此技术命名。然而，深度学习中的卷积本质上是信号/图像处理中的互相关。这两个算子之间存在微妙的差异。</p>
 <p>在信号/图像处理中，卷积定义为：<br><img src="\\images\pasted-4.png\" alt="卷积公式"><br>它被定义为两个函数在反转和移位后的乘积的积分。以下可视化展示了这一想法。</p>
@@ -543,6 +544,22 @@
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/19/多种多样的卷积操作（中篇）/" rel="prev" title="多种多样的卷积操作（中篇）">
+                多种多样的卷积操作（中篇） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
       
       
@@ -619,7 +636,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

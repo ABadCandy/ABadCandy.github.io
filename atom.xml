@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-02-19T11:15:10.388Z</updated>
+  <updated>2019-02-19T12:39:18.617Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,33 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>多种多样的卷积操作（中篇）</title>
+    <link href="http://yoursite.com/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/"/>
+    <id>http://yoursite.com/2019/02/19/多种多样的卷积操作（中篇）/</id>
+    <published>2019-02-19T11:15:43.000Z</published>
+    <updated>2019-02-19T12:39:18.617Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;Transposed卷积（解卷积）&quot;&gt;&lt;a href=&quot;#Transposed卷积（解卷积）&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>多种多样的卷积操作（上篇）</title>
     <link href="http://yoursite.com/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/"/>
     <id>http://yoursite.com/2019/02/19/多种多样的卷积操作（上篇）/</id>
     <published>2019-02-19T09:10:00.000Z</published>
-    <updated>2019-02-19T11:15:10.388Z</updated>
+    <updated>2019-02-19T13:00:18.186Z</updated>
     
     <summary type="html">
     
