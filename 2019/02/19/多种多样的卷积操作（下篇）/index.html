@@ -118,7 +118,8 @@
 <meta property="og:image" content="https://abadcandy.github.io/images/pasted-113.png">
 <meta property="og:image" content="https://abadcandy.github.io/images/pasted-114.png">
 <meta property="og:image" content="https://abadcandy.github.io/images/pasted-115.png">
-<meta property="og:updated_time" content="2019-02-20T02:31:20.930Z">
+<meta property="og:image" content="https://abadcandy.github.io/images/Decoder.png">
+<meta property="og:updated_time" content="2019-02-20T07:57:21.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（下篇）">
 <meta name="twitter:description" content="因果卷积casual卷积最初随WaveNet一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLS">
@@ -462,6 +463,7 @@
 <p><img src="../../../../images/pasted-71.png" alt="一维扩张卷积。在实现上，1D的dilate conv主要是通过padding来实现的。2D主要是通过mask filter map来实现的"></p>
 <p>整个生成过程的动态图如下:</p>
 <p><img src="../../../../images/pasted-73.png" alt="dilated casual convolution"></p>
+<a id="more"></a>
 <h4 id="变形卷积"><a href="#变形卷积" class="headerlink" title="变形卷积"></a>变形卷积</h4><p>deformable卷积来自<a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">论文《Deformable Convolutional Networks》</a>,是MASA 2017年的作品，其灵感来源于Google DeepMind 2016年发表的<a href="https://arxiv.org/abs/1506.02025" target="_blank" rel="noopener">STN（Spatial Transform Network</a>,但二者有着巨大的差别：</p>
 <ul>
 <li>STN作者说明了CNN对于输入数据缺乏空间变换不变性，因此引入了一个spatial transformer module，不需要额外的监督，能够以data-driven的方式学习得到输入图像或特征图的全局空间变换参数，赋予网络spatial invariant能力。ST模块可以分成三个部分：localization net根据输入的feature map回归spatial transform的参数θ，然后用这个参数去生成一个采样的grid，最后根据这个grid以及输入的feature map得到输出的经过空间变换的feature map。</li>
@@ -499,14 +501,13 @@
 <li>将U中图片的像素索引值与V相加，得到偏移后的position（即在原始图片U中的坐标值），需要将position值限定为图片大小以内。position的大小为（b × h × w × 2c)，但position只是一个坐标值，而且还是float类型的，我们需要这些float类型的坐标值获取像素值。</li>
 <li>取一个坐标值（a,b)，将其转换为四个整数，floor(a), ceil(a), floor(b), ceil(b)，将这四个整数进行整合，得到四对坐标（floor(a),floor(b)),  ((floor(a),ceil(b)),  ((ceil(a),floor(b)),  ((ceil(a),ceil(b))。这四对坐标每个坐标都对应U中的一个像素值，而我们需要得到(a,b)的像素值，这里采用双线性差值的方式计算（一方面得到的像素准确，另一方面可以进行反向传播）。</li>
 </ol>
-<a id="more"></a>
 <h4 id="上采样"><a href="#上采样" class="headerlink" title="上采样"></a>上采样</h4><p>这里又要谈点题外的东西了，回顾之前在<a href="https://abadcandy.github.io/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/">中篇</a>中提到的转置卷积，其实就是一种上采样操作，不过其参数kernel是可学习的。如下为kernel=3, stride=2的转置卷积的一个示例：</p>
 <p><img src="../../../../images/pasted-113.png" alt=" Transposed convolution with kernel size 3 and stride 2"></p>
 <p>同样地，上节中提到的插值一样可以做到上采样：</p>
 <p><img src="../../../../images/pasted-114.png" alt=" "></p>
 <p>类似的，还有Zeiler等人<a href="https://arxiv.org/abs/1311.2901" target="_blank" rel="noopener">论文《Visualizing and Understanding Convolutional Networks<br>》</a>中提到的”Max Unpooling”，如下图所示：</p>
 <p><img src="../../../../images/pasted-115.png" alt="Max Unpooling"></p>
-<p>更多的上采样操作如Decomposed Transposed Convolution、Separable Transposed Convolution、Depth To Space和Bilinear additive upsampling等可在<a href="https://arxiv.org/abs/1707.05847" target="_blank" rel="noopener">《The Devil is in the Decoder<br>》</a>一文中查看。</p>
+<p>更多的上采样操作如Decomposed Transposed Convolution、Separable Transposed Convolution、Depth To Space和Bilinear additive upsampling等如下图所示。具体内容可在<a href="https://arxiv.org/abs/1707.05847" target="_blank" rel="noopener">《The Devil is in the Decoder<br>》</a>一文中查看。<br><img src="../../../../images/Decoder.png" alt="Decoder"></p>
 <h4 id="Graph-Convolution"><a href="#Graph-Convolution" class="headerlink" title="Graph Convolution"></a>Graph Convolution</h4><p>推荐阅读 (<a href="https://github.com/thunlp/GNNPapers" target="_blank" rel="noopener">https://github.com/thunlp/GNNPapers</a>)</p>
 <h4 id="Spherical-CNNs"><a href="#Spherical-CNNs" class="headerlink" title="Spherical CNNs"></a>Spherical CNNs</h4><p>推荐阅读 (<a href="https://arxiv.org/abs/1801.10130" target="_blank" rel="noopener">https://arxiv.org/abs/1801.10130</a>)</p>
 <h4 id="深度学习框架中的卷积实现"><a href="#深度学习框架中的卷积实现" class="headerlink" title="深度学习框架中的卷积实现"></a>深度学习框架中的卷积实现</h4><p>待续…</p>
@@ -545,7 +546,7 @@
   <p><span>本文标题:</span><a href="/2019/02/19/多种多样的卷积操作（下篇）/">多种多样的卷积操作（下篇）</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 A Bad Candy 的个人博客">A Bad Candy</a></p>
   <p><span>发布时间:</span>2019年02月19日 - 17:02</p>
-  <p><span>最后更新:</span>2019年02月20日 - 10:02</p>
+  <p><span>最后更新:</span>2019年02月20日 - 15:02</p>
   <p><span>原始链接:</span><a href="/2019/02/19/多种多样的卷积操作（下篇）/" title="多种多样的卷积操作（下篇）">https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（下篇）/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（下篇）/"  aria-label="复制成功！"></i></span>
   </p>
@@ -605,8 +606,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/19/多种多样的卷积操作（中篇）/" rel="next" title="多种多样的卷积操作（中篇）">
-                <i class="fa fa-chevron-left"></i> 多种多样的卷积操作（中篇）
+              <a href="/2019/02/19/多种多样的卷积操作（上篇）/" rel="next" title="多种多样的卷积操作（上篇）">
+                <i class="fa fa-chevron-left"></i> 多种多样的卷积操作（上篇）
               </a>
             
           </div>
@@ -614,10 +615,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/19/多种多样的卷积操作（上篇）/" rel="prev" title="多种多样的卷积操作（上篇）">
-                多种多样的卷积操作（上篇） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
