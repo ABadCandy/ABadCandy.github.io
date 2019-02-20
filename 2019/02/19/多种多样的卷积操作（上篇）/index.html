@@ -14,6 +14,13 @@
 
 
 
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
 
 
 
@@ -74,7 +81,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml /注意：有一个空格" title="Hexo" type="application/atom+xml" />
 
 
 
@@ -85,33 +92,33 @@
 <meta name="keywords" content="卷积">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多种多样的卷积操作（上篇）">
-<meta property="og:url" content="http://yoursite.com/2019/02/19/多种多样的卷积操作（上篇）/index.html">
+<meta property="og:url" content="https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（上篇）/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/pasted-4.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-5.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-6.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-7.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-8.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-10.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-9.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-11.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-14.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-15.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-16.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-17.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-18.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-19.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-20.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-21.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-34.png">
-<meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
-<meta property="og:updated_time" content="2019-02-20T01:58:35.338Z">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-4.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-5.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-6.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-7.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-8.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-10.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-9.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-11.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-14.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-15.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-16.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-17.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-18.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-19.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-20.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-21.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-34.png">
+<meta property="og:image" content="https://abadcandy.github.io/images/pasted-35.png">
+<meta property="og:updated_time" content="2019-02-20T02:30:33.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（上篇）">
 <meta name="twitter:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
-<meta name="twitter:image" content="http://yoursite.com/images/pasted-4.png">
+<meta name="twitter:image" content="https://abadcandy.github.io/images/pasted-4.png">
 
 
 
@@ -141,7 +148,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/19/多种多样的卷积操作（上篇）/"/>
+  <link rel="canonical" href="https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（上篇）/"/>
 
 
 
@@ -320,7 +327,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/多种多样的卷积操作（上篇）/">
+    <link itemprop="mainEntityOfPage" href="https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（上篇）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="A Bad Candy">
@@ -397,6 +404,37 @@
             </span>
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
           
 
           
@@ -509,7 +547,50 @@
     
     
     
+    
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+    </div>
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2019/02/19/多种多样的卷积操作（上篇）/">多种多样的卷积操作（上篇）</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 A Bad Candy 的个人博客">A Bad Candy</a></p>
+  <p><span>发布时间:</span>2019年02月19日 - 17:02</p>
+  <p><span>最后更新:</span>2019年02月20日 - 10:02</p>
+  <p><span>原始链接:</span><a href="/2019/02/19/多种多样的卷积操作（上篇）/" title="多种多样的卷积操作（上篇）">https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（上篇）/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://abadcandy.github.io/2019/02/19/多种多样的卷积操作（上篇）/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+    });
+    });  
+</script>
 
+      
+    </div>
     
 
     
@@ -520,7 +601,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/卷积/" rel="tag"># 卷积</a>
+            <a href="/tags/卷积/" rel="tag"><i class="fa fa-tag"></i> 卷积</a>
           
         </div>
       
@@ -548,14 +629,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/02/19/多种多样的卷积操作（中篇）/" rel="next" title="多种多样的卷积操作（中篇）">
+                <i class="fa fa-chevron-left"></i> 多种多样的卷积操作（中篇）
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/19/多种多样的卷积操作（中篇）/" rel="prev" title="多种多样的卷积操作（中篇）">
-                多种多样的卷积操作（中篇） <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/19/多种多样的卷积操作（下篇）/" rel="prev" title="多种多样的卷积操作（下篇）">
+                多种多样的卷积操作（下篇） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -600,7 +685,9 @@
       <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
-
+  
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=36471572&auto=1&height=66"></iframe>
+  
   <aside id="sidebar" class="sidebar">
     
     <div class="sidebar-inner">
@@ -669,7 +756,7 @@
 
           
             <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
+              <a href="/atom.xml /注意：有一个空格" rel="alternate">
                 <i class="fa fa-rss"></i>
                 RSS
               </a>
@@ -682,7 +769,7 @@
                   <span class="links-of-author-item">
                     <a href="https://blog.csdn.net/qq_26293147?t=1" target="_blank" title="CSDN">
                       
-                        <i class="fa fa-fw fa-csdn"></i>CSDN</a>
+                        <i class="fa fa-fw fa-keycdn"></i>CSDN</a>
                   </span>
                 
                   <span class="links-of-author-item">
@@ -710,6 +797,20 @@
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                推荐阅读
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://pytorch.org/" title="Pytorch" target="_blank">Pytorch</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -750,10 +851,19 @@
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart" aria-hidden="true"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">A Bad Candy</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">13.2k</span>
   
 </div>
 
@@ -776,6 +886,11 @@
 
 
 
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共13.2k字</span>
+</div>
 
         
 <div class="busuanzi-count">
@@ -841,6 +956,8 @@
   
 
 
+  
+
 
 
 
@@ -879,6 +996,11 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
   
 
 
