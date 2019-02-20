@@ -107,7 +107,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-21.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-34.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
-<meta property="og:updated_time" content="2019-02-19T14:43:20.216Z">
+<meta property="og:updated_time" content="2019-02-20T01:36:00.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（上篇）">
 <meta name="twitter:description" content="前言不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在CSDN上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之">
@@ -437,9 +437,7 @@
 <ol>
 <li>因果(Casual)卷积  </li>
 <li>变形(Deformable)卷积</li>
-<li>上采样（Unpooling, Decomposed Transposed Convolution）</li>
-<li>Depth to space</li>
-<li>Bilinear additive upsampling</li>
+<li>上采样（Unpooling）</li>
 <li>Graph Convolution</li>
 <li>Spherical CNNs</li>
 <li>深度学习框架中的卷积实现</li>
@@ -473,6 +471,7 @@
 <p><img src="../../../../images/pasted-17.png" alt="考虑2D卷积的另一种方法：将该过程视为通过输入层滑动3D滤波器矩阵。请注意，输入层和filter具有相同的深度（channel数=kernel数）"></p>
 <p>现在我们可以看到如何在不同深度的层之间进行过渡。假设输入层有Din通道，我们希望输出层有Dout通道。我们需要做的是将Dout filters应用于输入层。每个滤波器都有Din kernels。每个filter提供一个输出通道。应用Dout filters后，我们有Dout通道，然后可以将它们堆叠在一起形成输出层。</p>
 <p><img src="../../../../images/pasted-18.png" alt="标准2D卷积。使用Dout filters将具有深度Din的一个层映射到具有深度Dout的另一个层"></p>
+<a id="more"></a>
 <h4 id="3D卷积"><a href="#3D卷积" class="headerlink" title="3D卷积"></a>3D卷积</h4><p>在上一节的最后一个插图中，我们看到我们实际上是对3D volume执行卷积。但通常情况下，我们仍将该操作称为深度学习中的2D卷积。这是3D体数据的2D卷积。滤波器深度与输入层深度相同。3D filter仅在双向（图像的高度和宽度）上移动。此类操作的输出是2D图像（仅限1个通道）。</p>
 <p>当然，有三维卷积。它们是2D卷积的推广。这里在3D卷积中，滤波器深度小于输入层深度（kernel大小&lt;channel大小）。结果，3D filter可以在所有3个方向（图像的高度，宽度，通道）上移动。在每个位置，逐元素乘法和加法生成一个数字。由于过滤器滑过3D空间，输出数字也排列在3D空间中。然后输出是3D数据。</p>
 <p><img src="../../../../images/pasted-19.png" alt="在3D卷积中，3D filter可以在所有3个方向（图像的高度，宽度，通道）上移动。在每个位置，逐元素乘法和加法生成一个数字。由于滤波器滑过3D空间，输出数字也排列在3D空间中。然后输出是3D数据。"></p>

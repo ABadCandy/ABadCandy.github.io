@@ -367,16 +367,56 @@
 
       
         
-          
-            <h4 id="因果卷积"><a href="#因果卷积" class="headerlink" title="因果卷积"></a>因果卷积</h4><p>casual卷积最初随<a href="https://arxiv.org/pdf/1609.03499.pdf" target="_blank" rel="noopener">WaveNet</a>一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLSTM的思想截然不同。</p>
+          <h4 id="因果卷积"><a href="#因果卷积" class="headerlink" title="因果卷积"></a>因果卷积</h4><p>casual卷积最初随<a href="https://arxiv.org/pdf/1609.03499.pdf" target="_blank" rel="noopener">WaveNet</a>一起提出,WaveNet是一个生成模型，类似于早期的pixel RNN和Pixel CNN，主要用来生成语音，声音元素是一个点一个点生成的。WaveNet是利用卷积来学习t时刻之前的输入数据（音频），来预测t+1时刻的输出. 对输入数据的顺序很注重, t时刻的输出仅仅依赖于1,2,…,t-1时刻的输入，不会依赖于t+1时刻以及之后时刻的输入。这与BiLSTM的思想截然不同。</p>
 <p><img src="../../../../images/pasted-70.png" alt="casual convolution"></p>
 <p>由于声音文件是时间上的一维数组，16KHz的采样率的文件，每秒钟就会有16000个元素，而上面所说的因果卷积的感受野非常小，即使堆叠很多层也只能使用到很少的数据来生成t时刻的的元素，为了扩大卷积的感受野，WaveNet采用了堆叠了（stack）多层扩张（dilated ）卷积(<a href="http://localhost:4000/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%AD%E7%AF%87%EF%BC%89/" target="_blank" rel="noopener">中篇</a>里有提到)来增大网络的感受野，使得网络生成下一个元素的时候，能够使用更多之前的元素数值。1D扩张卷积如下图所示：</p>
 <p><img src="../../../../images/pasted-71.png" alt="一维扩张卷积。在实现上，1D的dilate conv主要是通过padding来实现的。2D主要是通过mask filter map来实现的"></p>
 <p>整个生成过程的动态图如下:</p>
 <p><img src="../../../../images/pasted-73.png" alt="dilated casual convolution"></p>
-<h4 id="变形卷积"><a href="#变形卷积" class="headerlink" title="变形卷积"></a>变形卷积</h4><p>deformable卷积来自<a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">论文《Deformable Convolutional Networks》</a>,是MASA 2017年的作品，其灵感来源于<a href="https://arxiv.org/abs/1506.02025" target="_blank" rel="noopener">STN（Spatial Transform Network</a>,但二者有着巨大的差别：</p>
-<h4 id="上采样"><a href="#上采样" class="headerlink" title="上采样"></a>上采样</h4><h4 id="Depth-to-space"><a href="#Depth-to-space" class="headerlink" title="Depth to space"></a>Depth to space</h4><h4 id="Bilinear-additive-upsampling"><a href="#Bilinear-additive-upsampling" class="headerlink" title="Bilinear additive upsampling"></a>Bilinear additive upsampling</h4><h4 id="Graph-Convolution"><a href="#Graph-Convolution" class="headerlink" title="Graph Convolution"></a>Graph Convolution</h4><h4 id="Spherical-CNNs"><a href="#Spherical-CNNs" class="headerlink" title="Spherical CNNs"></a>Spherical CNNs</h4>
-          
+<h4 id="变形卷积"><a href="#变形卷积" class="headerlink" title="变形卷积"></a>变形卷积</h4><p>deformable卷积来自<a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">论文《Deformable Convolutional Networks》</a>,是MASA 2017年的作品，其灵感来源于Google DeepMind 2016年发表的<a href="https://arxiv.org/abs/1506.02025" target="_blank" rel="noopener">STN（Spatial Transform Network</a>,但二者有着巨大的差别：</p>
+<ul>
+<li>STN作者说明了CNN对于输入数据缺乏空间变换不变性，因此引入了一个spatial transformer module，不需要额外的监督，能够以data-driven的方式学习得到输入图像或特征图的全局空间变换参数，赋予网络spatial invariant能力。ST模块可以分成三个部分：localization net根据输入的feature map回归spatial transform的参数θ，然后用这个参数去生成一个采样的grid，最后根据这个grid以及输入的feature map得到输出的经过空间变换的feature map。</li>
+</ul>
+<p><img src="../../../../images/pasted-79.png" alt="STN"></p>
+<p>具体而言，localization网络的输入是feature map U∈R^H×W×C，输出 θ=f_loc(U)，该层的结构通常是一个全连接网络或者卷积网络后接一个回归层来训练参数θ。 θ的size取决于我们预先定义的空间变换的类型（仿射，平移，缩放，旋转，剪切等），比如仿射变换的话，参数大小就是6维。</p>
+<p><img src="../../../../images/pasted-83.png" alt="parameterised sampling grid"></p>
+<p>有了空间变换的参数之后，我们就可以知道输出的feature map上的每一个点在输入的feature map上的位置了。比如说对于二维的仿射变换，我们可以建立输出feature map上的坐标和输入feature map上坐标之间的映射关系：如公式：</p>
+<p><img src="../../../../images/pasted-82.png" alt="空间变换公式"></p>
+<p>其中 (xti,yti)表示输出的feature map上的坐标，(xsi,ysi) 表示输出feature map上坐标对应在输入feature map上的采样点坐标。但此时往往(xsi,ysi)会落在原始输入特征图的几个像素点中间部分，所以需要利用双线性插值来计算出对应该点的灰度值。</p>
+<p>再来说说双线性插值，数字图像中实现缩放的方法有很多种，其中一种就是双线性插值，在实现图像缩放时，有两种方法来确定缩放后的图像的像素值，第一种是根据原图像中的的像素找到对应的缩放后的图像中的像素，第二种是根据缩放后的图像找到对应的原图像中的像素.</p>
+<p><img src="../../../../images/pasted-85.png" alt="projection"></p>
+<p>但是第一种方法有缺点，因为小图中的像素点到大图中的像素点不是满射，因此大图中的点不能完全有像素值，第二种方法也有缺点，大图中的点逆映射为小图中的点时，得到的像素坐标值可能不是整数，一种办法是采用最近邻方法，即将得到的坐标值与相邻的原图像中的像素坐标值比较，取离得最近的坐标值对应的像素值作为缩放后的图像对应的坐标值的像素值，这种办法可能导致图像失真，因此采用双线性差值的办法来进行计算相应的像素值。</p>
+<p>在对图像进行仿射变换时，会出现一个问题，当原图像中某一点的坐标映射到变换后图像时，坐标可能会出现小数,如旋转后的右图所示，这样在原图中就没有对应的像素值。  </p>
+<p><img src="../../../../images/pasted-88.png" alt="旋转"></p>
+<p>在实现时我们通常将变换后图像上所有的位置映射到原图像计算（这样做比正向计算方便得多），即依次遍历变换后图像上所有的像素点，根据仿射变换矩阵计算出映射到原图像上的坐标（可能出现小数），然后用双线性插值，根据该点周围4个位置的值加权平均得到该点值。过程可用如下图和公式表示：<br><img src="../../../../images/pasted-90.png" alt="双线性插值"></p>
+<p><img src="../../../../images/pasted-91.png" alt="双线性插值公式"><br>这里R1,Q11等均表示那一点的像素值。将R1,R2代入得：<br><img src="../../../../images/pasted-93.png" alt="双线性插值公式"></p>
+<p>知道了输出feature map在输入feature map上的采样点坐标之后，接下来就是要根据采样点的值确定输出目标点的值了。这里一般会用到kernel，以采样点为中心的kernel范围内的点对输出目标点的值都有贡献。<br><img src="../../../../images/pasted-97.png" alt=" "><br>上式中，Vic是输出特征图的第c个通道中位置(xti,yti)处的像素i的值，所有的空间变换对于各个channel都是一样的。H′,W′表示输出的特征图的长宽。U表示输入特征图上第c个通道中点(m,n)的像素值，k表示预定义的kernel即采样核，xsi,ysi表示输入feature map上的采样点坐标，Φ表示kernel的参数。<br>可以这样理解：（1）输出特征图上某一点Vic的灰度值对应于输入特征图上某一点(xis,yis)的灰度值，而这点的灰度值由周围的若干点的灰度值Ucnm共同确定并且距离(xis,yis)越近（距离关系由xis-m和yis-n确定），影响越大（权重越大）。（2）具体的灰度插值方法由k()中Φx和Φy确定。当采用最近邻或双线性插值方法时，上述公式就退化成如下两个公式：<br><img src="../../../../images/pasted-101.png" alt="最近邻插值"></p>
+<p><img src="../../../../images/pasted-102.png" alt="双线性插值"></p>
+<p>双线性插值使得目标灰度值只与(xsi,ysi)周围4个点的灰度有关。具体来说，当|xsi−m|或者|ysi−n|大于1时，对应的max()项将取0，也就是说，只有(xsi,ysi)周围4个点的灰度值决定目标像素点的灰度并且当|xsi−m|和|ysi−n|越小，影响越大（即离点(xsi,ysi)越近，权重越大)，这和前面介绍双线性插值的结论是一致的。另外很重要的一点是，该公式对Ucnm和(xsi,ysi)是可导的，如下所示。也就是说，ST的变换过程是可以在网络中不断训练来修正参数的。</p>
+<p><img src="../../../../images/pasted-104.png" alt=" "></p>
+<p>U就是前一个CNN层的输出，包含参数w的，先对U求偏导才能继续对U中包含的前一层参数W求偏导。到localization的链式：z-&gt;V-&gt;theta。到前一层的链式：z-&gt;V-&gt;U-&gt;W，localization等于在U后开了一个小门，误差一部分流到门就断了，把theta更新。另一部分还得从U往前流直到数据源输入层。最后根据以下公式求xis对θ的导数。</p>
+<p><img src="../../../../images/pasted-106.png" alt=" "></p>
+<ul>
+<li>言归正传，在Deformable convolution一文中，以标准的3*3卷积为例：</li>
+</ul>
+<p><img src="../../../../images/pasted-107.png" alt="3*3卷积公式"></p>
+<p>对于每个输出y(p0)，都要从x上采样9个位置，这9个位置都在中心位置x(p0)向四周扩散得到的gird形状上，(-1,-1)代表x(p0)的左上角，(1,1)代表x(p0)的右下角，其他类似。</p>
+<p>而在可变形卷积中，如下所言：</p>
+<p><img src="../../../../images/pasted-109.png" alt=" "></p>
+<p>同样对于每个输出y(p0)，都要从x上采样9个位置，这9个位置是中心位置x(p0)向四周扩散得到的，但是多了一个新的参数 ∆pn，允许采样点扩散成非gird形状.注意∆pn很有可能是小数，而feature map x上都是整数位置，这时候就需要双线性插值。最终deformable convolution如下图所示：</p>
+<p><img src="../../../../images/pasted-111.png" alt=" convolution"></p>
+<ol>
+<li>原始图片或特征图（大小为b × h × w × c），记为U，经过一个普通卷积，卷积填充为same，即输出输入大小不变，对应的输出结果为（b × h × w × 2c)，记为V，输出的结果是指原图片U中每个像素的偏移量（x偏移与y偏移，因此为2c）。</li>
+<li>将U中图片的像素索引值与V相加，得到偏移后的position（即在原始图片U中的坐标值），需要将position值限定为图片大小以内。position的大小为（b × h × w × 2c)，但position只是一个坐标值，而且还是float类型的，我们需要这些float类型的坐标值获取像素值。</li>
+<li>取一个坐标值（a,b)，将其转换为四个整数，floor(a), ceil(a), floor(b), ceil(b)，将这四个整数进行整合，得到四对坐标（floor(a),floor(b)),  ((floor(a),ceil(b)),  ((ceil(a),floor(b)),  ((ceil(a),ceil(b))。这四对坐标每个坐标都对应U中的一个像素值，而我们需要得到(a,b)的像素值，这里采用双线性差值的方式计算（一方面得到的像素准确，另一方面可以进行反向传播）。</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/19/多种多样的卷积操作（下篇）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -493,8 +533,7 @@
 
       
         
-          
-            <h4 id="Transposed卷积（解卷积）"><a href="#Transposed卷积（解卷积）" class="headerlink" title="Transposed卷积（解卷积）"></a>Transposed卷积（解卷积）</h4><p>对于许多应用程序和在许多网络架构中，我们经常希望进行与正常卷积相反方向的转换，即我们希望执行上采样。一些示例包括生成高分辨率图像并将低维特征映射到高维空间，例如自动编码器或语义分割。（在后面的示例中，语义分割首先在编码器中提取要素图，然后在解码器中恢复原始图像大小，以便它可以对原始图像中的每个像素进行分类。）</p>
+          <h4 id="Transposed卷积（解卷积）"><a href="#Transposed卷积（解卷积）" class="headerlink" title="Transposed卷积（解卷积）"></a>Transposed卷积（解卷积）</h4><p>对于许多应用程序和在许多网络架构中，我们经常希望进行与正常卷积相反方向的转换，即我们希望执行上采样。一些示例包括生成高分辨率图像并将低维特征映射到高维空间，例如自动编码器或语义分割。（在后面的示例中，语义分割首先在编码器中提取要素图，然后在解码器中恢复原始图像大小，以便它可以对原始图像中的每个像素进行分类。）</p>
 <p>传统上，可以通过应用插值方案或手动创建规则来实现上采样。另一方面，诸如神经网络之类的现代架构倾向于让网络本身自动地学习正确的转换，而无需人为干预。为此，我们可以使用转置卷积。</p>
 <p>转置卷积在文献中也称为反卷积或分数跨步卷积。然而，值得注意的是，“反卷积”这个名称不太合适，因为转置卷积不是信号/图像处理中定义的真实反卷积。从技术上讲，信号处理中的反卷积会逆转卷积运算。这里情况不同。因此，一些作者强烈反对将转置卷积称为反卷积。人们称它为反卷积主要是因为简单。稍后，我们将看到为什么将这种操作称为转置卷积是自然而且更合适的。</p>
 <p>始终可以使用直接卷积实现转置卷积。对于下图中的示例，我们使用3 x 3内核在2 x 2输入上应用转置卷积，使用单位步幅填充2 x 2边框。上采样输出的大小为4 x 4。</p>
@@ -572,45 +611,13 @@
 <p><img src="../../../../images/pasted-58.png" alt=" "></p>
 <p>对于大多数现代架构，输出层通常具有许多通道，例如数百甚至数千。对于这样的层（Nc &gt;&gt; h），则上述表达式降低至1 / h / h。这意味着对于这种渐近表达，如果使用3 x 3 filters，则2D卷积的乘法比深度可分离卷积多9倍。对于5 x 5 filters，2D卷积的乘法次数增加了25倍。</p>
 <p>使用深度可分离卷积有任何缺点吗？当然有。深度可分离卷积减少了卷积中的参数数量。因此，对于小型模型，如果2D卷积被深度可分离卷积替换，则模型容量可以显着降低。结果，该模型可能变得次优。但是，如果使用得当，深度可分离卷积可以为您提供效率，而不会显着损害您的模型性能。</p>
-<h4 id="扁平化卷积"><a href="#扁平化卷积" class="headerlink" title="扁平化卷积"></a>扁平化卷积</h4><p>Flattened卷积是在<a href="https://arxiv.org/abs/1412.5474" target="_blank" rel="noopener">论文《Flattened convolutional neural networks for feedforward acceleration》</a>中提出的。直观地说，这个想法是应用filter分离。我们将这个标准滤波器分成3个1D滤波器，而不是应用一个标准卷积滤波器将输入层映射到输出层。这种想法与上述空间可分卷积中的类似，其中空间滤波器由两个秩-1滤波器近似。</p>
-<p><img src="../../../../images/pasted-59.png" alt=" "></p>
-<p>人们应该注意到，如果标准卷积滤波器是秩-1滤波器，那么这种滤波器总是可以分成三个1D滤波器的交叉积。但这是一个强大的条件，标准过滤器的内在等级高于实际中的等级。正如指出的纸 “作为现象的分类问题增加diculty，需要更多数目的前导部件的要解决的问题…在深网络学到滤池已分布的特征值，并直接施加分离到显着性的信息损失的滤池结果。 ”</p>
-<p>为了缓解这种问题，本文限制了接收领域的联系，以便模型可以在训练时学习一维分离的过滤器。该论文声称，通过在3D空间中跨越所有方向的连续1D过滤器序列组成的有线网络的训练提供了与标准卷积网络相当的性能，由于学习参数的显着减少，计算成本更低。</p>
-<h4 id="分组卷积"><a href="#分组卷积" class="headerlink" title="分组卷积"></a>分组卷积</h4><p>2012年，在<a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf" target="_blank" rel="noopener">AlexNet论文</a>中引入了分组卷积。实现它的主要原因是允许通过两个具有有限内存（每个GPU 1.5 GB内存）的GPU进行网络训练。下面的AlexNet在大多数层上显示了两个独立的卷积路径。它正在跨两个GPU进行模型并行化（当然，如果有更多的GPU，可以进行多GPU并行化）。</p>
-<p><img src="../../../../images/pasted-60.png" alt="Alexnet"></p>
-<p>在这里，我们描述了分组卷积如何工作。首先，传统的2D卷积遵循以下步骤。在此示例中，通过应用128 filters（每个lter的大小为3 x 3 x 3），将大小为（7 x 7 x 3）的输入层转换为大小为（5 x 5 x 128）的输出层。或者在一般情况下，通过应用Dout内核（每个大小为h x w x Din）将大小（Hin x Win x Din）的输入层变换为大小（Hout x Wout x Dout）的输出层。</p>
-<p><img src="../../../../images/pasted-61.png" alt="标准2D卷积"></p>
-<p>在分组卷积中，过滤器被分成不同的组。每组负责具有一定深度的传统2D卷积。以下示例可以使此更清楚。</p>
-<p><img src="../../../../images/pasted-62.png" alt="2个filter组的分组卷积"></p>
-<p>以上是具有2个filter组的分组卷积的说明。在每个过滤器组中，每个filter的深度仅为标准卷积中每个filter的一半。它们具有深度Din / 2.每个filter组包含Dout / 2 filters。第一个filter组（红色）与输入层的前半部分（[：，：, 0：Din / 2]）卷积，而第二个filter组（蓝色）与输入层的后半部分卷积（[： ，：，Din / 2：Din]）。结果，每个lter组创建Dout / 2通道。总的来说，两组创建2 x Dout / 2 = Dout通道。然后，我们使用Dout通道将这些通道堆叠在输出层中。</p>
-<h5 id="分组卷积与深度卷积"><a href="#分组卷积与深度卷积" class="headerlink" title="分组卷积与深度卷积"></a>分组卷积与深度卷积</h5><p>您可能已经在分组卷积和深度可分离卷积中使用的深度卷积之间观察到一些联系和差异。如果滤波器组的数量与输入层通道相同，则每个filter的深度为Din / Din = 1.这与深度卷积中的filter深度相同。</p>
-<p>另一方面，每个滤波器组现在包含Dout / Din 个filters。总的来说，输出层的深度为Dout。这与深度卷积中的不同，后者不会改变层深度。在深度可分离卷积中，层深度稍后通过1x1卷积来扩展。</p>
-<p>进行分组卷积有一些优点。</p>
-<p>第一个优势是有效的训练。由于卷积被分成几个路径，每个路径可以由不同的GPU单独处理。此过程允许以并行方式对多个GPU进行模型训练。与使用一个GPU训练所有内容相比，多GPU上的这种模型并行化允许每步将更多图像馈送到网络中。模型并行化被认为比数据并行化更好。后者将数据集分成批次，然后我们在每批次上进行训练。然而，当批量大小变得太小时，我们基本上做的是随机性而不是批量梯度下降。这将导致较慢且有时较差的收敛。</p>
-<p>分组卷积对于训练非常深的神经网络非常重要，如下面所示的ResNeXt。第二个优点是模型更有效，即模型参数随着filter组数量的增加而减少。在前面的示例中，lters在标称2D卷积中具有h x w x Din x Dout参数。具有2个filter组的分组卷积中的滤波器具有（h x w x Din / 2 x Dout / 2）x 2参数。参数数量减少一半。</p>
-<p><img src="../../../../images/pasted-63.png" alt="ResNeXt"></p>
-<p>第三个优点有点令人惊讶。分组卷积可以提供比标称2D卷积更好的模型。另一个很棒的<a href="https://blog.yani.io/filter-group-tutorial/" target="_blank" rel="noopener">博客</a>解释了它。这是一个简短的总结。</p>
-<p>原因是稀疏的filter联系。下图是相邻层的相关性。这种关系很稀疏。</p>
-<p><img src="../../../../images/pasted-64.png" alt="在CIFAR10上训练的Network-in-Network模型中相邻层的滤波器之间的相关矩阵。成对的高度相关滤波器更亮，而低相关滤波器更暗。"></p>
-<p>分组卷积的相关图怎么样？</p>
-<p><img src="../../../../images/pasted-65.png" alt="在使用1,2,4,8和16个过滤器组训练时，在CIFAR10上训练的Network-in-Network模型中相邻层的过滤器之间的相关性。"></p>
-<p>当使用1,2,4,8和16个过滤器组训练模型时，上图是相邻层的过滤器之间的相关性。该<a href="https://blog.yani.io/filter-group-tutorial/" target="_blank" rel="noopener">文章</a>提出了一个推理：“滤波器组的效果是在通道尺寸的块对角结构化的稀疏学习…具有高相关性的filter在滤波器组的网络中以更加结构化的方式学习得到。实际上，不需要学习的过滤关系可以进行更长时间的参数化。在以这种显着的方式减少网络中的参数数量时，它并不容易过拟合，因此类似正则化的方法允许优化器学习更准确，更有效的深度网络。”</p>
-<p><img src="../../../../images/pasted-66.png" alt="AlexNet conv1层filter分离：如作者所述，滤波器组似乎是结构
-化学习得到并分为两个不同的组，黑白和彩色filters。"></p>
-<p>此外，每个滤波器组都学习数据的唯一表示。正如AlexNet的作者所注意到的那样，滤波器组似乎将学习的filters组织成两个不同的组，黑白过滤器和彩色过滤器。</p>
-<h4 id="打乱分组卷积"><a href="#打乱分组卷积" class="headerlink" title="打乱分组卷积"></a>打乱分组卷积</h4><p>Shuffled grouped convolution来源于face++提出的<a href="https://arxiv.org/abs/1707.01083" target="_blank" rel="noopener">ShuffleNet</a>。ShuffleNet是一种计算有效的卷积架构，专为计算能力非常有限的移动设备（例如10-150 MFLOPs）而设计。</p>
-<p>Shuffled分组卷积背后的想法与分组卷积（在<a href="https://arxiv.org/abs/1704.04861" target="_blank" rel="noopener">MobileNet</a>和<a href="https://arxiv.org/abs/1704.04861" target="_blank" rel="noopener">ResNeXt</a>中用到）和深度可分离卷积（在<a href="https://arxiv.org/abs/1610.02357" target="_blank" rel="noopener">Xception</a>中使用）背后的想法相关联。</p>
-<p>总的来说，打乱分组卷积涉及分组卷积和通道打乱。在<a href="https://abadcandy.github.io/2019/02/19/%E5%A4%9A%E7%A7%8D%E5%A4%9A%E6%A0%B7%E7%9A%84%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C%EF%BC%88%E4%B8%8A%E7%AF%87%EF%BC%89/" target="_blank" rel="noopener">上篇</a>关于分组卷积的部分中，我们知道滤波器被分成不同的组。每组负责具有一定深度的传统2D卷积。总操作量明显减少。对于下面的图中的示例，我们有3个filter组。第一个filter组与输入层中的红色部分进行卷积。类似地，第二和第三滤波器组与输入中的绿色和蓝色部分卷积。每个滤波器组中的kernel深度仅为输入层中通道总数的1/3。在该示例中，在第一组分组卷积GConv1之后，输入层被映射到中间特征图。然后通过第二组分组卷积GConv2将该特征图映射到输出层。</p>
-<p><img src="../../../../images/pasted-67.png" alt=" "></p>
-<p>分组卷积在计算上是有效的。但问题是每个filter组只处理从先前层中传递下来的固定部分的信息。对于上图中的示例，第一个filter组（红色）仅处理从输入通道的前1/3传递的信息。蓝色filter组（蓝色）仅处理从最后1/3的输入通道传递下来的信息。因此，每个filter组仅限于学习一些特定的功能。此属性会阻止通道组之间的信息流，并在训练期间削弱表征能力。为了解决这个问题，我们应用了通道shuffle。</p>
-<p>通道shuffle的想法是我们想要混合不同的filter组的信息。在下图中，我们在应用具有3个filter组的第一个分组卷积GConv1后得到了特征图。在将此特征图馈送到第二个分组卷积之前，我们首先将每个组中的通道划分为多个子组。我们打乱了这些子组。</p>
-<p><img src="../../../../images/pasted-68.png" alt="Channel shuffle"></p>
-<p>在这样的shuffling之后，我们像往常一样继续执行第二个分组卷积GConv2。但现在，由于shuffled层中的信息已经混合，我们实质上是在GConv2中为特征图层（或输入层）中的不同子组提供每个组。因此，我们允许通道组之间的信息流动，并加强表征。</p>
-<h4 id="逐点分组卷积"><a href="#逐点分组卷积" class="headerlink" title="逐点分组卷积"></a>逐点分组卷积</h4><p><a href="https://arxiv.org/abs/1707.01083" target="_blank" rel="noopener">ShuffleNet论文</a>还介绍了逐点分组卷积。通常，对于分组卷积，例如在MobileNet或ResNeXt中，分组操作在3x3空间卷积上执行，但不在1 x 1卷积上执行。shuffleNet论文认为，1 x 1卷积的计算成本也很高。它建议将分组卷积应用于1 x 1卷积。正如名称所示，逐点分组卷积执行1 x 1卷积的分组操作。该操作与分组卷积相同，只有一个修改 - 在1x1 filters而不是NxN filters（N&gt; 1）上执行。</p>
-<p>在ShuffleNet论文中，作者使用了我们学到的三种类型的卷积：（1）分组卷积; （2）逐点分组卷积; （3）深度可分离卷积。这种架构设计显着降低了计算成本，同时保持了准确性。例如，ShuffleNet和AlexNet的分类错误在实际移动设备上具有可比性。然而，计算成本已从AlexNet的720 MFLOPs降至ShuffleNet的40-140 MFLOPs。由于计算成本相对较小且模型性能良好，ShuffleNet在移动设备的卷积神经网络领域得到了普及。</p>
-<p>下篇待续…</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/19/多种多样的卷积操作（中篇）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -749,8 +756,7 @@
 
       
         
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在<a href="https://blog.csdn.net/qq_26293147?t=1" target="_blank" rel="noopener">CSDN</a>上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之前看过的论文和资料以及最近微博上爱可可老师分享的文章<a href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Ftowardsdatascience.com%2Fa-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215" target="_blank" rel="noopener">《A Comprehensive Introduction to Different Types of Convolutions in Deep Learning》</a>,来一起感受下深度学习中“卷积”的魅力~ （注：本文主要翻译该篇文章，并加上自己的理解，同时会扩展提到其他几种不同的卷积形式）</p>
+          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>不知不觉又快到了找工作的季节，慕然回想一下自己这两年学过的知识，大部分都变得陌生却又有点熟悉。于是乎决定重拾自己之前在<a href="https://blog.csdn.net/qq_26293147?t=1" target="_blank" rel="noopener">CSDN</a>上写博客的热情，但是发现CSDN的界面又chou了许多… 所以还是花费了点时间自己搭Github Page + Hexo，准备把最近自己复习整理的知识点一一记录下来，与大家一起交流学习！ 话不多说，今天第一篇博客主要分享下卷积神经网络CNN中各种花式卷积操作，结合自己之前看过的论文和资料以及最近微博上爱可可老师分享的文章<a href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Ftowardsdatascience.com%2Fa-comprehensive-introduction-to-different-types-of-convolutions-in-deep-learning-669281e58215" target="_blank" rel="noopener">《A Comprehensive Introduction to Different Types of Convolutions in Deep Learning》</a>,来一起感受下深度学习中“卷积”的魅力~ （注：本文主要翻译该篇文章，并加上自己的理解，同时会扩展提到其他几种不同的卷积形式）</p>
 <p>本文内容较多，故分为上中下三篇，上篇包括：</p>
 <ol>
 <li>卷积与互相关</li>
@@ -773,9 +779,7 @@
 <ol>
 <li>因果(Casual)卷积  </li>
 <li>变形(Deformable)卷积</li>
-<li>上采样（Unpooling, Decomposed Transposed Convolution）</li>
-<li>Depth to space</li>
-<li>Bilinear additive upsampling</li>
+<li>上采样（Unpooling）</li>
 <li>Graph Convolution</li>
 <li>Spherical CNNs</li>
 <li>深度学习框架中的卷积实现</li>
@@ -809,39 +813,13 @@
 <p><img src="../../../../images/pasted-17.png" alt="考虑2D卷积的另一种方法：将该过程视为通过输入层滑动3D滤波器矩阵。请注意，输入层和filter具有相同的深度（channel数=kernel数）"></p>
 <p>现在我们可以看到如何在不同深度的层之间进行过渡。假设输入层有Din通道，我们希望输出层有Dout通道。我们需要做的是将Dout filters应用于输入层。每个滤波器都有Din kernels。每个filter提供一个输出通道。应用Dout filters后，我们有Dout通道，然后可以将它们堆叠在一起形成输出层。</p>
 <p><img src="../../../../images/pasted-18.png" alt="标准2D卷积。使用Dout filters将具有深度Din的一个层映射到具有深度Dout的另一个层"></p>
-<h4 id="3D卷积"><a href="#3D卷积" class="headerlink" title="3D卷积"></a>3D卷积</h4><p>在上一节的最后一个插图中，我们看到我们实际上是对3D volume执行卷积。但通常情况下，我们仍将该操作称为深度学习中的2D卷积。这是3D体数据的2D卷积。滤波器深度与输入层深度相同。3D filter仅在双向（图像的高度和宽度）上移动。此类操作的输出是2D图像（仅限1个通道）。</p>
-<p>当然，有三维卷积。它们是2D卷积的推广。这里在3D卷积中，滤波器深度小于输入层深度（kernel大小&lt;channel大小）。结果，3D filter可以在所有3个方向（图像的高度，宽度，通道）上移动。在每个位置，逐元素乘法和加法生成一个数字。由于过滤器滑过3D空间，输出数字也排列在3D空间中。然后输出是3D数据。</p>
-<p><img src="../../../../images/pasted-19.png" alt="在3D卷积中，3D filter可以在所有3个方向（图像的高度，宽度，通道）上移动。在每个位置，逐元素乘法和加法生成一个数字。由于滤波器滑过3D空间，输出数字也排列在3D空间中。然后输出是3D数据。"></p>
-<p>类似于编码2D域中对象的空间关系的2D卷积，3D卷积可以描述3D空间中的对象的空间关系。这种3D关系对于一些应用是重要的，例如在生物医学图像的3D分割/重建中，例如CT和MRI，其中诸如血管的对象在3D空间中蜿蜒。</p>
-<h4 id="1-1卷积"><a href="#1-1卷积" class="headerlink" title="1*1卷积"></a>1*1卷积</h4><p>由于我们在前面的3D卷积部分讨论了深度操作，让我们看看另一个有趣的操作，即1 x 1卷积。</p>
-<p>您可能想知道为什么这有用。我们只是将一个数字乘以输入层中的每个数字吗？是和否。对于只有一个通道的图层，操作非常简单，我们将每个元素乘以一个数字即可。</p>
-<p>如果输入层有多个通道，事情会变得很有趣。下图说明了1 x 1卷积如何适用于尺寸为H x W x D的输入层。在1 x 1卷积后，滤波器尺寸为1 x 1 x D，输出通道的尺寸为H x W x 1.如果我们应用N这样的1 x 1卷积然后将结果连接在一起，我们可以得到一个尺寸为H x W x N的输出层。</p>
-<p><img src="../../../../images/pasted-20.png" alt="1 x 1 convolution, where the flter size is 1 x 1 x D"></p>
-<p>最初，在Network-in-Network论文中提出了1 x 1卷积。然后，它们在Google Ineption系列论文中被高度使用。1 x 1卷积的一些优点是：</p>
-<ul>
-<li>维度缩减后的计算有效性</li>
-<li>有效的低维嵌入或特征池化</li>
-<li>卷积后再次应用非线性</li>
-</ul>
-<p>在上图中可以观察到前两个优点。在1 x 1卷积之后，我们显著地减小了尺寸。假设原始输入有200个通道，1 x 1卷积会将这些通道（特征）嵌入到单个通道中。第三个优点是在1 x 1卷积之后，可以添加诸如ReLU的非线性激活。非线性允许网络学习更复杂的功能。</p>
-<p>这些优势在Google的Inceptionx系列<a href="https://arxiv.org/abs/1409.4842" target="_blank" rel="noopener">论文</a>中描述为：<br>“上述模块的一个大问题，至少在这种朴素的形式下，即使是一个合适数量的5x5卷积，在具有大量filters的卷积层之上也会非常昂贵。这导致了提出的架构中的第二个想法：明智地应用尺寸减小和投影，否则计算要求会增加太多。 这是基于嵌入的成功：即使是低维嵌入也可能包含大量关于相对较大图像补丁的信息。也就是说，在昂贵的3 x3和5 x 5卷积之前，使用1 x 1卷积来减少计算量。 除了用作缩减之外，它们还包括使用整流线性激活(RELU)，这使得它们具有双重用途.”</p>
-<p>关于1 x 1卷积的一个有趣的观点来自Yann LeCun“在卷积网络中，没有”完全连接层“这样的东西。只有1x1卷积kernels和一个完整连接表的卷积层。”</p>
-<p><img src="../../../../images/pasted-21.png" alt="LeCun&#39;s view"></p>
-<h4 id="卷积数学基础"><a href="#卷积数学基础" class="headerlink" title="卷积数学基础"></a>卷积数学基础</h4><p>我们现在知道如何处理卷积的深度。让我们继续讨论如何处理其他两个方向（高度和宽度）的卷积，以及重要的卷积算法。</p>
-<p>以下是一些术语：</p>
-<ul>
-<li>kernel大小：kernel已在上一节中讨论。内核大小决定了卷积的视野。</li>
-<li>步幅(stride): 当滑过图像时，它会确定内核的步长。步幅为1意味着内核逐像素地滑过图像。步幅为2意味着内核通过每步移动2个像素（即跳过1个像素）滑过图像。我们可以使用步幅（&gt; = 2）对图像进行下采样。</li>
-<li>卷积后再次应用非线性</li>
-</ul>
-<p>下图描述了使用内核大小为3，步幅为1和填充为1的2D卷积。</p>
-<p><img src="../../../../images/pasted-34.png" alt="kerne=3, stride=1,padding=1的2D卷积"></p>
-<p>有一篇关于详细算术的优秀文章<a href="https://arxiv.org/abs/1603.07285" target="_blank" rel="noopener">《A guide to convolution arithmetic for deep learning》</a>,可以参考它来获得内核大小，步幅和填充的不同组合的详细描述和示例。在这里，我只是总结一般案例的结果。</p>
-<p>对于大小为i，内核大小为k，p的填充和s的步幅的输入图像，来自卷积的输出图像具有大小o：</p>
-<p><img src="../../../../images/pasted-35.png" alt="卷积操作输出尺寸通用计算公式"></p>
-<p>中篇待续…</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/19/多种多样的卷积操作（上篇）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

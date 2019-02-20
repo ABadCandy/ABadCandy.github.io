@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-66.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-67.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-68.png">
-<meta property="og:updated_time" content="2019-02-19T14:47:43.047Z">
+<meta property="og:updated_time" content="2019-02-20T01:36:42.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多种多样的卷积操作（中篇）">
 <meta name="twitter:description" content="Transposed卷积（解卷积）对于许多应用程序和在许多网络架构中，我们经常希望进行与正常卷积相反方向的转换，即我们希望执行上采样。一些示例包括生成高分辨率图像并将低维特征映射到高维空间，例如自动编码器或语义分割。（在后面的示例中，语义分割首先在编码器中提取要素图，然后在解码器中恢复原始图像大小，以便它可以对原始图像中的每个像素进行分类。） 传统上，可以通过应用插值方案或手动创建规则来实现上采样">
@@ -484,6 +484,7 @@
 <p><img src="../../../../images/pasted-58.png" alt=" "></p>
 <p>对于大多数现代架构，输出层通常具有许多通道，例如数百甚至数千。对于这样的层（Nc &gt;&gt; h），则上述表达式降低至1 / h / h。这意味着对于这种渐近表达，如果使用3 x 3 filters，则2D卷积的乘法比深度可分离卷积多9倍。对于5 x 5 filters，2D卷积的乘法次数增加了25倍。</p>
 <p>使用深度可分离卷积有任何缺点吗？当然有。深度可分离卷积减少了卷积中的参数数量。因此，对于小型模型，如果2D卷积被深度可分离卷积替换，则模型容量可以显着降低。结果，该模型可能变得次优。但是，如果使用得当，深度可分离卷积可以为您提供效率，而不会显着损害您的模型性能。</p>
+<a id="more"></a>
 <h4 id="扁平化卷积"><a href="#扁平化卷积" class="headerlink" title="扁平化卷积"></a>扁平化卷积</h4><p>Flattened卷积是在<a href="https://arxiv.org/abs/1412.5474" target="_blank" rel="noopener">论文《Flattened convolutional neural networks for feedforward acceleration》</a>中提出的。直观地说，这个想法是应用filter分离。我们将这个标准滤波器分成3个1D滤波器，而不是应用一个标准卷积滤波器将输入层映射到输出层。这种想法与上述空间可分卷积中的类似，其中空间滤波器由两个秩-1滤波器近似。</p>
 <p><img src="../../../../images/pasted-59.png" alt=" "></p>
 <p>人们应该注意到，如果标准卷积滤波器是秩-1滤波器，那么这种滤波器总是可以分成三个1D滤波器的交叉积。但这是一个强大的条件，标准过滤器的内在等级高于实际中的等级。正如指出的纸 “作为现象的分类问题增加diculty，需要更多数目的前导部件的要解决的问题…在深网络学到滤池已分布的特征值，并直接施加分离到显着性的信息损失的滤池结果。 ”</p>
